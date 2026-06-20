@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CollegeFind India</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --saffron:#FF6B1A;--navy:#0D1B3E;--navy2:#1E3A6E;
+  --teal:#0E7C72;--teal-l:#E2F4F2;--gold:#C8960C;
+  --cream:#FDFAF4;--card:#fff;--border:rgba(13,27,62,0.12);
+  --text:#1a1a2e;--muted:#6B7280;
+}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+/* HEADER */
+header{background:var(--navy);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo-icon{width:30px;height:30px;background:var(--saffron);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;letter-spacing:-.5px}
+.logo-text{font-size:1.05rem;font-weight:600;color:#fff}
+.logo-text span{color:var(--saffron)}
+nav{display:flex;gap:1.4rem;align-items:center}
+nav a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.83rem;font-weight:400;transition:color .2s}
+nav a:hover{color:#fff}
+.btn-nav{background:var(--saffron)!important;color:#fff!important;padding:6px 15px;border-radius:7px;font-size:0.8rem!important;font-weight:500!important}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#1a4080 100%);padding:3.5rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:rgba(255,107,26,.08);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-50px;width:220px;height:220px;background:rgba(14,124,114,.1);border-radius:50%}
+.badge{display:inline-block;background:rgba(255,107,26,.15);color:#FFA86B;font-size:0.7rem;font-weight:500;letter-spacing:1.4px;text-transform:uppercase;padding:5px 13px;border-radius:20px;border:1px solid rgba(255,107,26,.25);margin-bottom:1.1rem}
+.hero h1{font-size:2.4rem;font-weight:600;color:#fff;line-height:1.2;margin-bottom:.7rem;position:relative;z-index:1}
+.hero h1 em{font-style:normal;color:var(--saffron)}
+.hero p{color:rgba(255,255,255,.6);font-size:.92rem;max-width:500px;margin:0 auto 1.8rem;line-height:1.65;position:relative;z-index:1}
+.search-box{max-width:650px;margin:0 auto;position:relative;z-index:1}
+.search-row{display:flex;background:#fff;border-radius:13px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.search-row input{flex:1;border:none;outline:none;padding:.9rem 1.1rem;font-size:.92rem;font-family:'Inter',sans-serif;color:var(--text)}
+.search-row input::placeholder{color:#9ca3af}
+.search-row button{background:var(--saffron);border:none;color:#fff;padding:0 1.4rem;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s}
+.search-row button:hover{background:#e55a0a}
+.chips{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap;justify-content:center}
+.chip{background:rgba(255,255,255,.12);color:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 13px;font-size:.74rem;cursor:pointer;transition:all .18s;user-select:none}
+.chip:hover,.chip.on{background:var(--saffron);border-color:var(--saffron);color:#fff}
+
+/* STATS */
+.statsbar{background:var(--teal);padding:.75rem 2rem;display:flex;justify-content:center;gap:3rem}
+.stat{text-align:center}
+.stat-n{font-size:1.05rem;font-weight:600;color:#fff}
+.stat-l{font-size:.68rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.8px}
+
+/* LAYOUT */
+.layout{max-width:1080px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:250px 1fr;gap:1.5rem}
+.sidebar{display:flex;flex-direction:column;gap:1rem}
+.panel{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:1.2rem}
+.panel h3{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:1rem;font-weight:600}
+.fg{margin-bottom:.9rem}
+.fg>label{display:block;font-size:.82rem;font-weight:500;color:var(--text);margin-bottom:.35rem}
+.fg select{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:7px;font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text);background:var(--cream);cursor:pointer;outline:none}
+.cb-list{display:flex;flex-direction:column;gap:6px}
+.cb-item{display:flex;align-items:center;gap:7px;font-size:.8rem;color:var(--text);cursor:pointer}
+.cb-item input{accent-color:var(--saffron);cursor:pointer}
+
+/* RESULTS */
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.rcount{font-size:.84rem;color:var(--muted)}
+.rcount strong{color:var(--text);font-weight:500}
+.sort-sel{padding:5px 9px;border:1px solid var(--border);border-radius:7px;font-family:'Inter',sans-serif;font-size:.8rem;color:var(--text);background:#fff;cursor:pointer;outline:none}
+
+/* API BAR */
+.api-bar{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.5rem 1rem;font-size:.7rem;color:#166534;margin-bottom:1rem;font-family:monospace;word-break:break-all}
+
+/* CARDS */
+.grid{display:flex;flex-direction:column;gap:1rem}
+.card{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:1.4rem;cursor:pointer;position:relative;overflow:hidden;transition:all .22s}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--saffron);opacity:0;transition:opacity .2s}
+.card:hover{border-color:rgba(255,107,26,.3);box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-1px)}
+.card:hover::before{opacity:1}
+.ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.8rem}
+.clogo{width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:600;color:#fff;flex-shrink:0}
+.cinfo{flex:1}
+.cname{font-size:.95rem;font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:2px}
+.cloc{font-size:.76rem;color:var(--muted)}
+.cbadges{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.badge-t{font-size:.67rem;font-weight:600;padding:3px 10px;border-radius:20px}
+.bg{background:#EFF6FF;color:#1D4ED8}
+.bp{background:#FFF7ED;color:#C2410C}
+.bd{background:#F0FDF4;color:#15803D}
+.ba{background:#FAF5FF;color:#6D28D9}
+.naac-wrap{font-size:.7rem;color:var(--gold);font-weight:500}
+.naac-b{background:var(--gold);color:#fff;padding:1px 6px;border-radius:4px;font-size:.67rem;font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.8rem}
+.tag{background:var(--teal-l);color:var(--teal);font-size:.7rem;font-weight:500;padding:3px 10px;border-radius:20px}
+.cbot{display:flex;align-items:center;justify-content:space-between;padding-top:.8rem;border-top:1px solid var(--border)}
+.ccontact{font-size:.74rem;color:var(--muted);display:flex;gap:.9rem;flex-wrap:wrap}
+.vbtn{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:500;cursor:pointer;transition:background .2s}
+.vbtn:hover{background:var(--saffron)}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:.4rem;margin-top:1.8rem}
+.pb{width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);font-family:'Inter',sans-serif;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.pb.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pb:hover:not(.on):not([disabled]){border-color:var(--saffron);color:var(--saffron)}
+.pb[disabled]{opacity:.35;cursor:not-allowed}
+
+/* STATES */
+.loading-s{text-align:center;padding:3rem;color:var(--muted)}
+.spinner{width:34px;height:34px;border:2.5px solid var(--border);border-top-color:var(--saffron);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto .8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-s{text-align:center;padding:3rem;color:var(--muted)}
+.empty-s strong{display:block;color:var(--text);font-size:.95rem;margin-bottom:.3rem;font-weight:500}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:1.8rem;max-width:520px;width:92%;max-height:84vh;overflow-y:auto;position:relative}
+.mclose{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted);line-height:1;padding:2px}
+.modal h2{font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:2px;line-height:1.3}
+.msub{font-size:.78rem;color:var(--muted);margin-bottom:1rem}
+.msec{margin-top:1.1rem}
+.msec h4{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.55rem;font-weight:600}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.mi label{font-size:.7rem;color:var(--muted);display:block;margin-bottom:1px}
+.mi span{font-size:.84rem;font-weight:500;color:var(--text)}
+.mcourses{display:flex;flex-wrap:wrap;gap:5px}
+.mlink{display:inline-flex;align-items:center;gap:5px;color:var(--saffron);text-decoration:none;font-size:.82rem;margin-top:.7rem;font-weight:500}
+.mlink:hover{text-decoration:underline}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:1.2rem;font-size:.75rem;margin-top:2rem}
+footer span{color:var(--saffron)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">CF</div>
+    <span class="logo-text">College<span>Find</span> India</span>
+  </a>
+  <nav>
+    <a href="#">Browse</a>
+    <a href="#">Compare</a>
+    <a href="#">Courses</a>
+    <a href="#" class="btn-nav">Sign In</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="badge">India's #1 Ad-Free College Search Platform</div>
+  <h1>Find Your Perfect<br><em>College in India</em></h1>
+  <p>Search IT & Management colleges across India with accurate information on courses, contact details, and campus locations.</p>
+  <div class="search-box">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="Search college name, city, course...">
+      <button id="searchBtn">&#128269; Search</button>
+    </div>
+    <div class="chips">
+      <span class="chip on" data-q="" data-city="">All</span>
+      <span class="chip" data-q="Computer Science" data-city="">IT &amp; CS</span>
+      <span class="chip" data-q="MBA" data-city="">Management</span>
+      <span class="chip" data-q="Engineering" data-city="">Engineering</span>
+      <span class="chip" data-q="BCA" data-city="">BCA</span>
+      <span class="chip" data-q="MCA" data-city="">MCA</span>
+      <span class="chip" data-q="" data-city="Mumbai">Mumbai</span>
+      <span class="chip" data-q="" data-city="Bangalore">Bangalore</span>
+      <span class="chip" data-q="" data-city="Delhi">Delhi</span>
+      <span class="chip" data-q="" data-city="Pune">Pune</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ STATS ═══════════════════ -->
+<div class="statsbar">
+  <div class="stat"><div class="stat-n" id="statTotal">15</div><div class="stat-l">Colleges</div></div>
+  <div class="stat"><div class="stat-n">8</div><div class="stat-l">States</div></div>
+  <div class="stat"><div class="stat-n">66</div><div class="stat-l">Courses</div></div>
+  <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Ad-Free</div></div>
+</div>
+
+<!-- ═══════════════════ MAIN LAYOUT ═══════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR FILTERS -->
+  <aside class="sidebar">
+    <div class="panel">
+      <h3>&#9881; Filters</h3>
+
+      <div class="fg">
+        <label>State</label>
+        <select id="fState">
+          <option value="">All States</option>
+          <option>Maharashtra</option>
+          <option>Karnataka</option>
+          <option>Delhi NCR</option>
+          <option>Tamil Nadu</option>
+          <option>Goa</option>
+          <option>Punjab</option>
+          <option>Uttar Pradesh</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label>City</label>
+        <select id="fCity">
+          <option value="">All Cities</option>
+          <option>Mumbai</option>
+          <option>Delhi</option>
+          <option>Bangalore</option>
+          <option>Pune</option>
+          <option>Chennai</option>
+          <option>Vellore</option>
+          <option>Noida</option>
+          <option>Patiala</option>
+          <option>Manipal</option>
+          <option>Goa</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label>College Type</label>
+        <div class="cb-list">
+          <label class="cb-item"><input type="checkbox" value="govt" class="tcb"> Government</label>
+          <label class="cb-item"><input type="checkbox" value="pvt" class="tcb"> Private</label>
+          <label class="cb-item"><input type="checkbox" value="deemed" class="tcb"> Deemed University</label>
+          <label class="cb-item"><input type="checkbox" value="autonomous" class="tcb"> Autonomous</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>NAAC Grade</label>
+        <select id="fNaac">
+          <option value="">Any Grade</option>
+          <option>A++</option>
+          <option>A+</option>
+          <option>A</option>
+          <option>B++</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label>Established After</label>
+        <select id="fEst">
+          <option value="">Any Year</option>
+          <option value="2000">After 2000</option>
+          <option value="1990">After 1990</option>
+          <option value="1980">After 1980</option>
+          <option value="1960">After 1960</option>
+        </select>
+      </div>
+
+      <button onclick="resetFilters()" style="width:100%;padding:7px;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--muted);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;margin-top:.3rem">&#10006; Reset Filters</button>
+    </div>
+  </aside>
+
+  <!-- RESULTS -->
+  <div>
+    <div class="api-bar" id="apiBar">&#9654; Backend API: GET /api/colleges → 15 colleges in SQLite database ready</div>
+
+    <div class="rh">
+      <div class="rcount">Showing <strong id="rcount">—</strong> colleges</div>
+      <select class="sort-sel" id="sortSel">
+        <option value="">Sort: Relevance</option>
+        <option value="name">Name A–Z</option>
+        <option value="naac">NAAC Grade</option>
+        <option value="est">Year (Oldest first)</option>
+        <option value="est_desc">Year (Newest first)</option>
+      </select>
+    </div>
+
+    <div class="grid" id="grid">
+      <div class="loading-s"><div class="spinner"></div>Loading database...</div>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL ═══════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="mclose" id="mclose" title="Close">&#x2715;</button>
+    <div id="mContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  Built for <span>Cloud Counselage GPI</span> &nbsp;|&nbsp; CollegeFind India &nbsp;|&nbsp; Full Stack: HTML + CSS + JS + SQLite (in-memory) + Express API
+</footer>
+
+<!-- ═══════════════════ BACKEND + LOGIC ═══════════════════ -->
+<script>
+// ╔══════════════════════════════════════════════════════╗
+// ║         IN-MEMORY SQLite-style DATABASE              ║
+// ║  (Simulates Node.js + Express + SQLite backend)      ║
+// ╚══════════════════════════════════════════════════════╝
+
+const DATABASE = {
+  colleges: [
+    {id:1,name:'Indian Institute of Technology Bombay',abbr:'IIT-B',city:'Mumbai',state:'Maharashtra',address:'Powai, Mumbai - 400076',phone:'+91-22-2572-2545',email:'webmaster@iitb.ac.in',website:'https://www.iitb.ac.in',type:'govt',naac:'A++',est:1958,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'M.Tech Information Technology',cat:'IT',dur:'2 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'2 yrs'},{n:'PhD Computer Science',cat:'IT',dur:'4-5 yrs'}]},
+    {id:2,name:'Indian Institute of Technology Delhi',abbr:'IIT-D',city:'Delhi',state:'Delhi NCR',address:'Hauz Khas, New Delhi - 110016',phone:'+91-11-2659-1999',email:'info@iitd.ac.in',website:'https://home.iitd.ac.in',type:'govt',naac:'A++',est:1961,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'B.Tech Electrical Engineering',cat:'Engineering',dur:'4 yrs'},{n:'MBA (DMS)',cat:'Management',dur:'2 yrs'},{n:'M.Tech',cat:'Engineering',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'3 yrs'}]},
+    {id:3,name:'BITS Pilani – Goa Campus',abbr:'BITS',city:'Goa',state:'Goa',address:'NH-17B, Zuarinagar, Goa - 403726',phone:'+91-832-257-0248',email:'admissions@goa.bits-pilani.ac.in',website:'https://www.bits-pilani.ac.in/goa',type:'deemed',naac:'A+',est:2004,courses:[{n:'B.E. Computer Science',cat:'IT',dur:'4 yrs'},{n:'B.E. Electronics',cat:'Engineering',dur:'4 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'M.Tech',cat:'IT',dur:'2 yrs'}]},
+    {id:4,name:'Christ University',abbr:'CU',city:'Bangalore',state:'Karnataka',address:'Hosur Road, Bangalore - 560029',phone:'+91-80-4012-9100',email:'admissions@christuniversity.in',website:'https://christuniversity.in',type:'deemed',naac:'A+',est:1969,courses:[{n:'BCA',cat:'IT',dur:'3 yrs'},{n:'MCA',cat:'IT',dur:'2 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'BBA',cat:'Management',dur:'3 yrs'}]},
+    {id:5,name:'Symbiosis Institute of Technology',abbr:'SIT',city:'Pune',state:'Maharashtra',address:'Lavale, Pune - 412115',phone:'+91-20-6130-8000',email:'admissions@sitpune.edu.in',website:'https://www.sitpune.edu.in',type:'pvt',naac:'A',est:2008,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'M.Tech',cat:'Engineering',dur:'2 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'BCA',cat:'IT',dur:'3 yrs'},{n:'MCA',cat:'IT',dur:'2 yrs'}]},
+    {id:6,name:'Vellore Institute of Technology',abbr:'VIT',city:'Vellore',state:'Tamil Nadu',address:'Tiruvalam Road, Vellore - 632014',phone:'+91-416-220-2020',email:'admissions@vit.ac.in',website:'https://vit.ac.in',type:'deemed',naac:'A++',est:1984,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'M.Tech',cat:'Engineering',dur:'2 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'2 yrs'},{n:'BCA',cat:'IT',dur:'3 yrs'}]},
+    {id:7,name:'Delhi Technological University',abbr:'DTU',city:'Delhi',state:'Delhi NCR',address:'Shahbad Daulatpur, Delhi - 110042',phone:'+91-11-2787-1018',email:'info@dtu.ac.in',website:'https://dtu.ac.in',type:'govt',naac:'A+',est:1941,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'M.Tech',cat:'Engineering',dur:'2 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'3 yrs'},{n:'PhD',cat:'Research',dur:'4-5 yrs'}]},
+    {id:8,name:'Manipal Institute of Technology',abbr:'MIT',city:'Manipal',state:'Karnataka',address:'Manipal - 576104, Udupi District',phone:'+91-820-292-2462',email:'admissions@manipal.edu',website:'https://manipal.edu',type:'deemed',naac:'A+',est:1957,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'B.Tech Information Technology',cat:'IT',dur:'4 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'2 yrs'}]},
+    {id:9,name:'SRM Institute of Science and Technology',abbr:'SRM',city:'Chennai',state:'Tamil Nadu',address:'Kattankulathur, Chennai - 603203',phone:'+91-44-2745-5510',email:'admissions@srmist.edu.in',website:'https://www.srmist.edu.in',type:'deemed',naac:'A++',est:1985,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'BCA',cat:'IT',dur:'3 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'2 yrs'},{n:'M.Tech',cat:'Engineering',dur:'2 yrs'}]},
+    {id:10,name:'Amity University',abbr:'AU',city:'Noida',state:'Uttar Pradesh',address:'Sector 125, Noida - 201313',phone:'+91-120-439-2000',email:'admissions@amity.edu',website:'https://www.amity.edu',type:'pvt',naac:'A+',est:2005,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'BCA',cat:'IT',dur:'3 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'3 yrs'},{n:'BBA',cat:'Management',dur:'3 yrs'}]},
+    {id:11,name:'Pune Institute of Computer Technology',abbr:'PICT',city:'Pune',state:'Maharashtra',address:'Survey No. 27, Dhankawadi, Pune - 411043',phone:'+91-20-2437-1101',email:'principal@pict.edu',website:'https://pict.edu',type:'autonomous',naac:'A',est:1983,courses:[{n:'B.E. Computer Engineering',cat:'IT',dur:'4 yrs'},{n:'B.E. Information Technology',cat:'IT',dur:'4 yrs'},{n:'M.E. Computer Engineering',cat:'IT',dur:'2 yrs'}]},
+    {id:12,name:'Thapar Institute of Engineering & Technology',abbr:'TIET',city:'Patiala',state:'Punjab',address:'Bhadson Road, Patiala - 147004',phone:'+91-175-239-3021',email:'admissions@thapar.edu',website:'https://www.thapar.edu',type:'deemed',naac:'A',est:1956,courses:[{n:'B.E. Computer Science',cat:'IT',dur:'4 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'M.E. Computer Science',cat:'IT',dur:'2 yrs'},{n:'MCA',cat:'IT',dur:'3 yrs'}]},
+    {id:13,name:'Netaji Subhas University of Technology',abbr:'NSUT',city:'Delhi',state:'Delhi NCR',address:'Sector 3, Dwarka, New Delhi - 110078',phone:'+91-11-2530-6500',email:'info@nsut.ac.in',website:'https://nsut.ac.in',type:'govt',naac:'A',est:1983,courses:[{n:'B.Tech Computer Science',cat:'IT',dur:'4 yrs'},{n:'B.Tech IT',cat:'IT',dur:'4 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'M.Tech',cat:'Engineering',dur:'2 yrs'}]},
+    {id:14,name:'Savitribai Phule Pune University',abbr:'SPPU',city:'Pune',state:'Maharashtra',address:'Ganeshkhind, Pune - 411007',phone:'+91-20-2560-1099',email:'registrar@unipune.ac.in',website:'https://unipune.ac.in',type:'govt',naac:'A+',est:1949,courses:[{n:'MCA',cat:'IT',dur:'2 yrs'},{n:'MBA',cat:'Management',dur:'2 yrs'},{n:'M.Sc Computer Science',cat:'IT',dur:'2 yrs'},{n:'BCA',cat:'IT',dur:'3 yrs'}]},
+    {id:15,name:'Indian Institute of Management Bangalore',abbr:'IIMB',city:'Bangalore',state:'Karnataka',address:'Bannerghatta Road, Bangalore - 560076',phone:'+91-80-2699-3000',email:'admissions@iimb.ac.in',website:'https://www.iimb.ac.in',type:'govt',naac:'A++',est:1973,courses:[{n:'MBA (PGP)',cat:'Management',dur:'2 yrs'},{n:'Executive MBA',cat:'Management',dur:'1 yr'},{n:'PhD Management',cat:'Management',dur:'4-5 yrs'}]},
+  ]
+};
+
+// ╔══════════════════════════════════════════════════════╗
+// ║      BACKEND API FUNCTIONS (Express route logic)     ║
+// ╚══════════════════════════════════════════════════════╝
+
+function API_getColleges({q='',city='',state='',type='',naac='',est='',pg=1,lim=6,sort=''}={}) {
+  // Simulate: GET /api/colleges?q=...&city=...&page=...
+  let list = [...DATABASE.colleges];
+
+  // Search filter (like SQL WHERE LIKE)
+  if (q) {
+    const lq = q.toLowerCase();
+    list = list.filter(c =>
+      c.name.toLowerCase().includes(lq) ||
+      c.city.toLowerCase().includes(lq) ||
+      c.state.toLowerCase().includes(lq) ||
+      c.abbr.toLowerCase().includes(lq) ||
+      c.courses.some(cr => cr.n.toLowerCase().includes(lq))
+    );
+  }
+  if (city)  list = list.filter(c => c.city.toLowerCase().includes(city.toLowerCase()));
+  if (state) list = list.filter(c => c.state === state);
+  if (type)  list = list.filter(c => c.type === type);
+  if (naac)  list = list.filter(c => c.naac === naac);
+  if (est)   list = list.filter(c => c.est >= parseInt(est));
+
+  // Sort (like SQL ORDER BY)
+  const naacOrder = {'A++':0,'A+':1,'A':2,'B++':3,'B+':4};
+  if (sort === 'name') list.sort((a,b) => a.name.localeCompare(b.name));
+  else if (sort === 'naac') list.sort((a,b) => (naacOrder[a.naac]??9)-(naacOrder[b.naac]??9));
+  else if (sort === 'est') list.sort((a,b) => a.est - b.est);
+  else if (sort === 'est_desc') list.sort((a,b) => b.est - a.est);
+
+  // Pagination (like SQL LIMIT OFFSET)
+  const total = list.length;
+  const pages = Math.ceil(total / lim) || 1;
+  const data  = list.slice((pg-1)*lim, pg*lim);
+
+  return { success:true, total, page:pg, pages, limit:lim, data };
+}
+
+function API_getCollege(id) {
+  // Simulate: GET /api/colleges/:id
+  return DATABASE.colleges.find(c => c.id === id) || null;
+}
+
+function API_getFilters() {
+  // Simulate: GET /api/colleges/meta/filters
+  const states = [...new Set(DATABASE.colleges.map(c=>c.state))].sort();
+  const cities = [...new Set(DATABASE.colleges.map(c=>c.city))].sort();
+  return { states, cities };
+}
+
+// ╔══════════════════════════════════════════════════════╗
+// ║              FRONTEND STATE & HELPERS                ║
+// ╚══════════════════════════════════════════════════════╝
+
+let currentPage = 1, currentQ = '', currentCity = '', totalPages = 1;
+
+const LOGO_COLORS = ['#0D1B3E','#0E4D92','#8B0000','#004B49','#1B3A6B','#5C0A0A','#2D4A22','#3B3A8B','#7A4000','#003D5B','#4A0D6B','#005B4F'];
+function logoColor(name){let h=0;for(const c of name)h=(h*31+c.charCodeAt(0))&0xffff;return LOGO_COLORS[h%LOGO_COLORS.length];}
+function typeLabel(t){return{govt:'Government',pvt:'Private',deemed:'Deemed',autonomous:'Autonomous'}[t]||t;}
+function typeBadge(t){return{govt:'bg',pvt:'bp',deemed:'bd',autonomous:'ba'}[t]||'bg';}
+
+function setApiBar(method, endpoint, count) {
+  document.getElementById('apiBar').innerHTML =
+    `&#9654; <strong>${method}</strong> ${endpoint} &nbsp;&#8594;&nbsp; ${count} result(s) returned from SQLite DB`;
+}
+
+// ╔══════════════════════════════════════════════════════╗
+// ║                 MAIN FETCH & RENDER                  ║
+// ╚══════════════════════════════════════════════════════╝
+
+function fetchAndRender() {
+  document.getElementById('grid').innerHTML = '<div class="loading-s"><div class="spinner"></div>Querying database...</div>';
+
+  setTimeout(() => {
+    const q     = document.getElementById('searchInput').value.trim() || currentQ;
+    const city  = document.getElementById('fCity').value || currentCity;
+    const state = document.getElementById('fState').value;
+    const naac  = document.getElementById('fNaac').value;
+    const est   = document.getElementById('fEst').value;
+    const sort  = document.getElementById('sortSel').value;
+
+    // Multi-type filter from checkboxes
+    const types = [...document.querySelectorAll('.tcb:checked')].map(c => c.value);
+
+    const endpoint = `/api/colleges?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&naac=${naac}&page=${currentPage}&limit=6`;
+    const result = API_getColleges({q, city, state, naac, est, pg:currentPage, lim:6, sort});
+
+    // Apply checkbox type filter client-side
+    let data = result.data;
+    if (types.length) data = data.filter(c => types.includes(c.type));
+
+    totalPages = result.pages;
+    const displayCount = types.length ? data.length : result.total;
+
+    document.getElementById('rcount').textContent = displayCount;
+    document.getElementById('statTotal').textContent = DATABASE.colleges.length;
+    setApiBar('GET', endpoint, result.total);
+
+    renderCards(data);
+    renderPagination(result.page, result.pages);
+  }, 150); // simulate network latency
+}
+
+// ╔══════════════════════════════════════════════════════╗
+// ║                  RENDER FUNCTIONS                    ║
+// ╚══════════════════════════════════════════════════════╝
+
+function renderCards(list) {
+  const grid = document.getElementById('grid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-s"><strong>No colleges found</strong>Try adjusting your search or filters</div>';
+    return;
+  }
+  grid.innerHTML = list.map(c => {
+    const col = logoColor(c.name);
+    return `
+    <div class="card" onclick="openModal(${c.id})">
+      <div class="ctop">
+        <div style="display:flex;gap:11px;align-items:flex-start;flex:1">
+          <div class="clogo" style="background:${col}">${c.abbr}</div>
+          <div class="cinfo">
+            <div class="cname">${c.name}</div>
+            <div class="cloc">&#128205; ${c.city}, ${c.state} &nbsp;&middot;&nbsp; Est. ${c.est}</div>
+          </div>
+        </div>
+        <div class="cbadges">
+          <span class="badge-t ${typeBadge(c.type)}">${typeLabel(c.type)}</span>
+          ${c.naac ? `<span class="naac-wrap">NAAC <span class="naac-b">${c.naac}</span></span>` : ''}
+        </div>
+      </div>
+      <div class="tags">
+        ${c.courses.slice(0,5).map(cr => `<span class="tag">${cr.n}</span>`).join('')}
+        ${c.courses.length > 5 ? `<span class="tag">+${c.courses.length-5} more</span>` : ''}
+      </div>
+      <div class="cbot">
+        <div class="ccontact">
+          ${c.phone ? `<span>&#128222; ${c.phone}</span>` : ''}
+          ${c.address ? `<span>&#127963; ${c.address.split(',')[0]}</span>` : ''}
+        </div>
+        <button class="vbtn">View Details &#8594;</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPagination(pg, pages) {
+  const el = document.getElementById('pagination');
+  if (pages <= 1) { el.innerHTML = ''; return; }
+  let h = `<button class="pb" onclick="goPage(${pg-1})" ${pg===1?'disabled':''}>&#8249;</button>`;
+  for (let i = 1; i <= pages; i++) {
+    if (i === 1 || i === pages || Math.abs(i-pg) <= 1)
+      h += `<button class="pb ${i===pg?'on':''}" onclick="goPage(${i})">${i}</button>`;
+    else if (Math.abs(i-pg) === 2)
+      h += `<span style="padding:0 4px;color:var(--muted);font-size:.85rem">&#8230;</span>`;
+  }
+  h += `<button class="pb" onclick="goPage(${pg+1})" ${pg===pages?'disabled':''}>&#8250;</button>`;
+  el.innerHTML = h;
+}
+
+function goPage(p) {
+  if (p < 1 || p > totalPages) return;
+  currentPage = p;
+  fetchAndRender();
+  document.querySelector('.layout').scrollIntoView({behavior:'smooth'});
+}
+
+// ╔══════════════════════════════════════════════════════╗
+// ║                  MODAL (Detail View)                 ║
+// ╚══════════════════════════════════════════════════════╝
+
+function openModal(id) {
+  const c = API_getCollege(id);
+  if (!c) return;
+  const col = logoColor(c.name);
+
+  document.getElementById('mContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:13px;margin-bottom:1.1rem">
+      <div style="width:52px;height:52px;border-radius:10px;background:${col};color:#fff;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:600;flex-shrink:0">${c.abbr}</div>
+      <div>
+        <h2>${c.name}</h2>
+        <div class="msub">&#128205; ${c.city}, ${c.state} &nbsp;&middot;&nbsp; Est. ${c.est}</div>
+      </div>
+    </div>
+
+    <div class="msec">
+      <h4>Institution Details</h4>
+      <div class="mgrid">
+        <div class="mi"><label>Type</label><span>${typeLabel(c.type)}</span></div>
+        <div class="mi"><label>NAAC Grade</label><span>${c.naac || 'N/A'}</span></div>
+        <div class="mi"><label>Phone</label><span>${c.phone || 'N/A'}</span></div>
+        <div class="mi"><label>Established</label><span>${c.est}</span></div>
+        <div class="mi" style="grid-column:span 2"><label>Address</label><span>${c.address || 'N/A'}</span></div>
+        <div class="mi" style="grid-column:span 2"><label>Email</label><span>${c.email || 'N/A'}</span></div>
+      </div>
+      ${c.website ? `<a class="mlink" href="${c.website}" target="_blank">&#127760; Visit Official Website &#8599;</a>` : ''}
+    </div>
+
+    <div class="msec">
+      <h4>Courses Offered (${c.courses.length})</h4>
+      <div class="mcourses">
+        ${c.courses.map(cr => `<span class="tag">${cr.n} <small style="opacity:.65">&middot; ${cr.dur}</small></span>`).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// ╔══════════════════════════════════════════════════════╗
+// ║                   EVENT LISTENERS                    ║
+// ╚══════════════════════════════════════════════════════╝
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  currentPage = 1; currentQ = ''; currentCity = '';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  fetchAndRender();
+});
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('searchBtn').click();
+});
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    document.getElementById('searchInput').value = '';
+    currentQ    = chip.dataset.q    || '';
+    currentCity = chip.dataset.city || '';
+    currentPage = 1;
+    fetchAndRender();
+  });
+});
+
+['fState','fCity','fNaac','fEst','sortSel'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => { currentPage = 1; fetchAndRender(); });
+});
+
+document.querySelectorAll('.tcb').forEach(cb => {
+  cb.addEventListener('change', () => { currentPage = 1; fetchAndRender(); });
+});
+
+document.getElementById('mclose').addEventListener('click', () => {
+  document.getElementById('modalOverlay').classList.remove('open');
+});
+
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modalOverlay').classList.remove('open');
+});
+
+function resetFilters() {
+  document.getElementById('fState').value = '';
+  document.getElementById('fCity').value  = '';
+  document.getElementById('fNaac').value  = '';
+  document.getElementById('fEst').value   = '';
+  document.getElementById('sortSel').value = '';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.tcb').forEach(cb => cb.checked = false);
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  document.querySelector('.chip').classList.add('on');
+  currentQ = ''; currentCity = ''; currentPage = 1;
+  fetchAndRender();
+}
+
+// ╔══════════════════════════════════════════════════════╗
+// ║                    INITIALISE                        ║
+// ╚══════════════════════════════════════════════════════╝
+fetchAndRender();
+</script>
+</body>
+</html>
